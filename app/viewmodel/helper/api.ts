@@ -21,7 +21,7 @@ export const setApiToken = (token: string | null) => {
 // Request interceptor to attach bearer token dynamically
 apiInstance.interceptors.request.use(
   (config) => {
-    if (accessToken) {
+    if (accessToken && !config.url?.includes('/login')) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;

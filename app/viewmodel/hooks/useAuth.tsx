@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { LoginResponse, User } from '@/app/model/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { api, setApiToken } from '../helper/api';
-import { User, LoginResponse } from '@/app/model/auth';
 
 interface AuthContextType {
   user: User | null;
@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     setError(null);
     try {
-      const response: LoginResponse = await api.post("/api/auth/login/", {
+      const response: LoginResponse = await api.post("auth/login/", {
         email,
         password
       });

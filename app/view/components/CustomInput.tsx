@@ -50,7 +50,7 @@ export function CustomInput({
         <TextInput
           style={[styles.input, style]}
           secureTextEntry={isPassword && !showPassword}
-          placeholderTextColor="#B1B1B1"
+          placeholderTextColor="#7C7C7C"
           onFocus={handleFocus}
           onBlur={handleBlur}
           autoCapitalize="none"
@@ -83,36 +83,44 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   label: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
     color: COLORS.textGrey,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.borderGrey,
-    paddingBottom: 8,
+    backgroundColor: '#F2F3F2',
+    height: 58,
+    borderRadius: 15,
+    paddingHorizontal: 16,
+    borderWidth: 1.5,
+    borderColor: '#F2F3F2',
   },
   focusedInputWrapper: {
-    borderBottomColor: COLORS.primary,
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.white,
   },
   errorInputWrapper: {
-    borderBottomColor: COLORS.error,
+    borderColor: COLORS.error,
   },
   input: {
     flex: 1,
-    fontSize: 18,
+    fontSize: 16,
     color: COLORS.textDark,
-    paddingVertical: 4,
+    paddingVertical: 0,
+    height: '100%',
   },
   iconWrapper: {
     padding: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   errorText: {
     color: COLORS.error,
     fontSize: 13,
-    marginTop: 5,
+    marginTop: 6,
+    fontWeight: '500',
   }
 });

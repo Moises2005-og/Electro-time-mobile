@@ -74,7 +74,9 @@ export default function Login() {
           >
             {/* Logo/Icon Area */}
             <View style={styles.headerContainer}>
-              <Text style={styles.logoIcon}>⏰</Text>
+              <View style={styles.logoIconContainer}>
+                <Text style={styles.logoIcon}>⏰</Text>
+              </View>
               <Text style={styles.appName}>Eletro-time</Text>
             </View>
 
@@ -154,9 +156,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 40,
   },
+  logoIconContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#EBF8F2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+    borderWidth: 2,
+    borderColor: '#D4EFE0',
+  },
   logoIcon: {
-    fontSize: 50,
-    marginBottom: 10,
+    fontSize: 40,
   },
   appName: {
     fontSize: 24,
