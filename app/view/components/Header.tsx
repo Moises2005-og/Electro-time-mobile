@@ -1,14 +1,15 @@
-import React from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  TouchableOpacity, 
-  ActivityIndicator 
-} from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
-import { useAuth } from '../../viewmodel/hooks/useAuth';
+import React from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { COLORS, SIZES } from '../../viewmodel/constants/theme';
+import { useAuth } from '../../viewmodel/hooks/useAuth';
 
 interface HeaderProps {
   title: string;
@@ -28,9 +29,12 @@ export function Header({
   return (
     <View style={styles.header}>
       {showUserGreeting ? (
-        <View>
-          <Text style={styles.welcomeText}>Olá,</Text>
-          <Text style={styles.nameText}>{user?.nome || 'Colaborador'}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+          <Image source={require('../../../assets/images/PROFILE PIC 1.png')} />
+          <View>
+            <Text style={styles.welcomeText}>Bom dia!</Text>
+            <Text style={styles.Text}>{user?.nome || "Usuário"}</Text>
+          </View>
         </View>
       ) : (
         <Text style={styles.headerTitle}>{title}</Text>
@@ -41,7 +45,7 @@ export function Header({
           {isLoading ? (
             <ActivityIndicator color={COLORS.primary} size="small" />
           ) : (
-            <Ionicons name="refresh" size={20} color={COLORS.primary} />
+            <Ionicons name="log-out" size={20} color={COLORS.primary} />
           )}
         </TouchableOpacity>
       )}
@@ -71,6 +75,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.textDark,
     marginTop: 2,
+  },
+  Text: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: COLORS.textDark,
+    marginTop: 2
   },
   headerTitle: {
     fontSize: 20,

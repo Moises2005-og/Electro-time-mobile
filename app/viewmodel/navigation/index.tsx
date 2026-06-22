@@ -1,13 +1,14 @@
-import React from 'react';
-import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import Login from "../../view/screens/login";
+import Onboarding from "../../view/screens/onboarding";
+import { COLORS } from '../constants/theme';
 import { useAuth } from "../hooks/useAuth";
 import Layout from "../layout";
-import Onboarding from "../../view/screens/onboarding";
-import Login from "../../view/screens/login";
-import { COLORS } from '../constants/theme';
 
 const Stack = createNativeStackNavigator();
+
 
 export default function Navigation() {
   const { token, isLoading } = useAuth();

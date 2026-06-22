@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableOpacity, 
-  Alert, 
-  SafeAreaView,
-  StatusBar
-} from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
-import { api } from '../../viewmodel/helper/api';
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { COLORS, SIZES } from '../../viewmodel/constants/theme';
+import { api } from '../../viewmodel/helper/api';
 import { Header } from '../components/Header';
 
 export default function Documents() {
@@ -72,6 +72,7 @@ export default function Documents() {
         title="Meus Documentos" 
         onRefresh={loadData} 
         isLoading={loading} 
+        showUserGreeting={true}
       />
 
       {/* Segmented Control */}
@@ -148,18 +149,19 @@ export default function Documents() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FBFA',
+    backgroundColor: '#F9FBFA'
   },
   segmentedControlContainer: {
     backgroundColor: COLORS.white,
     paddingHorizontal: SIZES.padding,
     paddingBottom: 12,
+    paddingTop: 10
   },
   segmentedControl: {
     flexDirection: 'row',
     backgroundColor: '#F2F3F2',
     borderRadius: 12,
-    padding: 4,
+    padding: 4
   },
   segmentedButton: {
     flex: 1,

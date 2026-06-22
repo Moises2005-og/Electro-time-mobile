@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableOpacity, 
-  Alert, 
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
   SafeAreaView,
-  StatusBar
+  ScrollView,
+  StatusBar,
+  StyleSheet
 } from 'react-native';
-import { Ionicons } from "@expo/vector-icons";
-import { api } from '../../viewmodel/helper/api';
 import { COLORS, SIZES } from '../../viewmodel/constants/theme';
+import { api } from '../../viewmodel/helper/api';
 import { Header } from '../components/Header';
 
 export default function Home() {
@@ -154,6 +150,7 @@ export default function Home() {
       >
 
         {/* Live Clock Section */}
+        {/*        
         <View style={styles.clockCard}>
           <Text style={styles.dateText}>{formatDate(currentTime)}</Text>
           <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
@@ -162,8 +159,11 @@ export default function Home() {
             <Text style={[styles.statusText, { color: getStatusColor() }]}>{getStatusLabel()}</Text>
           </View>
         </View>
+        */}
 
         {/* Action Buttons Section */}
+        
+        {/*
         <View style={styles.actionsContainer}>
           <TouchableOpacity 
             style={[
@@ -195,8 +195,12 @@ export default function Home() {
             <Text style={styles.actionButtonText}>Ponto Externo</Text>
           </TouchableOpacity>
         </View>
+         */}
+
 
         {/* Lunch break button */}
+
+        {/*        
         {status !== 'FORA' && (
           <TouchableOpacity 
             style={[
@@ -219,29 +223,33 @@ export default function Home() {
             </Text>
           </TouchableOpacity>
         )}
+        */}
 
         {/* Horário e Escala Section */}
-        <Text style={styles.sectionTitle}>Escala de Hoje</Text>
-        <View style={styles.card}>
-          <View style={styles.row}>
-            <View style={styles.infoBlock}>
-              <Ionicons name="time-outline" size={20} color={COLORS.textGrey} />
-              <View style={styles.infoTextContainer}>
-                <Text style={styles.infoLabel}>Entrada / Saída</Text>
-                <Text style={styles.infoValue}>{horario.entry} - {horario.exit}</Text>
+        {/*        
+          <Text style={styles.sectionTitle}>Escala de Hoje</Text>
+          <View style={styles.card}>
+            <View style={styles.row}>
+              <View style={styles.infoBlock}>
+                <Ionicons name="time-outline" size={20} color={COLORS.textGrey} />
+                <View style={styles.infoTextContainer}>
+                  <Text style={styles.infoLabel}>Entrada / Saída</Text>
+                  <Text style={styles.infoValue}>{horario.entry} - {horario.exit}</Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.infoBlock}>
-              <Ionicons name="cafe-outline" size={20} color={COLORS.textGrey} />
-              <View style={styles.infoTextContainer}>
-                <Text style={styles.infoLabel}>Almoço</Text>
-                <Text style={styles.infoValue}>{almoco.duration || '1h'}</Text>
+              <View style={styles.infoBlock}>
+                <Ionicons name="cafe-outline" size={20} color={COLORS.textGrey} />
+                <View style={styles.infoTextContainer}>
+                  <Text style={styles.infoLabel}>Almoço</Text>
+                  <Text style={styles.infoValue}>{almoco.duration || '1h'}</Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
+        */}
 
         {/* Resumo da Jornada */}
+        {/*        
         <Text style={styles.sectionTitle}>Meu Resumo</Text>
         <View style={styles.statsContainer}>
           <View style={styles.statCard}>
@@ -253,6 +261,7 @@ export default function Home() {
             <Text style={styles.statValue}>{resumo.presenceCount}</Text>
           </View>
         </View>
+        */}
       </ScrollView>
     </SafeAreaView>
   );

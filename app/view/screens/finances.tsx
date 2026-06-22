@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableOpacity, 
-  Alert, 
-  SafeAreaView,
-  StatusBar
-} from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
-import { api } from '../../viewmodel/helper/api';
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { COLORS, SIZES } from '../../viewmodel/constants/theme';
+import { api } from '../../viewmodel/helper/api';
 import { useAuth } from '../../viewmodel/hooks/useAuth';
 import { Header } from '../components/Header';
 
@@ -139,6 +139,7 @@ export default function Finances() {
         title="Minhas Finanças" 
         onRefresh={loadData} 
         isLoading={loading} 
+        showUserGreeting={true}
       />
       <ScrollView 
         contentContainerStyle={styles.scrollContent}
