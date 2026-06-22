@@ -1,17 +1,17 @@
-import React from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableOpacity, 
-  SafeAreaView,
-  StatusBar,
-  Alert
-} from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
-import { useAuth } from '../../viewmodel/hooks/useAuth';
+import React from 'react';
+import {
+  Alert,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { COLORS, SIZES } from '../../viewmodel/constants/theme';
+import { useAuth } from '../../viewmodel/hooks/useAuth';
 import { Header } from '../components/Header';
 
 import { Role } from '../../model/auth';
@@ -58,7 +58,7 @@ export default function Profile() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <Header title="Meu Perfil" />
+      <Header title="Meu Perfil" showUserGreeting={true} />
       <ScrollView 
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -162,10 +162,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     borderWidth: 1.5,
     borderColor: '#F2F3F2',
-    shadowColor: '#000',
-    shadowOpacity: 0.02,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
   },
   avatarContainer: {
     width: 80,
@@ -220,10 +216,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     borderWidth: 1.5,
     borderColor: '#F2F3F2',
-    shadowColor: '#000',
-    shadowOpacity: 0.02,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
   },
   infoRow: {
     flexDirection: 'row',
@@ -256,10 +248,6 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     borderWidth: 1.5,
     borderColor: '#F2F3F2',
-    shadowColor: '#000',
-    shadowOpacity: 0.02,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
   },
   optionRow: {
     flexDirection: 'row',

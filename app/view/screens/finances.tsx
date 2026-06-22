@@ -283,10 +283,6 @@ const styles = StyleSheet.create({
     padding: 22,
     height: 200,
     justifyContent: 'space-between',
-    shadowColor: COLORS.primary,
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 6 },
     marginBottom: 28,
   },
   creditCardHeader: {
@@ -391,10 +387,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     borderWidth: 1.5,
     borderColor: '#F2F3F2',
-    shadowColor: '#000',
-    shadowOpacity: 0.02,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
   },
   leakDesc: {
     fontSize: 14,

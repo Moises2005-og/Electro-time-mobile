@@ -251,10 +251,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     borderWidth: 1.5,
     borderColor: '#F2F3F2',
-    shadowColor: '#000',
-    shadowOpacity: 0.02,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
   },
   calendarDay: {
     alignItems: 'center',
@@ -290,10 +286,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     borderWidth: 1.5,
     borderColor: '#F2F3F2',
-    shadowColor: '#000',
-    shadowOpacity: 0.02,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
   },
   taskRow: {
     flexDirection: 'row',

@@ -1,6 +1,6 @@
 export const COLORS = {
-  primary: "#53B175",       // Nectar Brand Green
-  primaryDark: "#489e67",
+  primary: "#3A88C8",       // Light Blue Theme
+  primaryDark: "#2C6CA5",
   textDark: "#181725",      // Main text / titles
   textGrey: "#7C7C7C",      // Descriptions / labels
   borderGrey: "#E2E2E2",    // Input borders and dividers

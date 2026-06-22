@@ -171,11 +171,6 @@ const styles = StyleSheet.create({
   },
   segmentedButtonActive: {
     backgroundColor: COLORS.white,
-    elevation: 1,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 2,
   },
   segmentedButtonText: {
     fontSize: 14,
@@ -199,10 +194,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderWidth: 1.5,
     borderColor: '#F2F3F2',
-    shadowColor: '#000',
-    shadowOpacity: 0.01,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 2,
   },
   docIconContainer: {
     width: 44,
