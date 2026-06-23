@@ -19,51 +19,30 @@ export default function Calendar() {
   const [actionLoading, setActionLoading] = useState(false);
 
   // States
-  const [calendario, setCalendario] = useState<any[]>([
-    { dia: '15', diaSemana: 'Seg', status: 'PRESENTE' },
-    { dia: '16', diaSemana: 'Ter', status: 'PRESENTE' },
-    { dia: '17', diaSemana: 'Qua', status: 'PRESENTE' },
-    { dia: '18', diaSemana: 'Qui', status: 'ATRASO' },
-    { dia: '19', diaSemana: 'Sex', status: 'FOLGA' },
-    { dia: '20', diaSemana: 'Sáb', status: 'FOLGA' },
-    { dia: '21', diaSemana: 'Dom', status: 'FOLGA' },
-  ]);
-
+  const [calendario, setCalendario] = useState<any[]>([]);
   const [ferias, setFerias] = useState<any>({
-    disponiveis: 15,
-    gozados: 7,
-    totais: 22,
-    solicitacoes: [
-      { id: '1', periodo: '01/08/2026 a 10/08/2026', dias: 10, status: 'APROVADO' },
-      { id: '2', periodo: '15/12/2026 a 20/12/2026', dias: 5, status: 'PENDENTE' }
-    ]
+    disponiveis: 0,
+    gozados: 0,
+    totais: 0,
+    solicitacoes: []
   });
-
-  const [atrasos, setAtrasos] = useState<any[]>([
-    { id: '1', data: '2026-06-18', minutos: 15, justificativa: 'Trânsito intenso' },
-    { id: '2', data: '2026-06-08', minutos: 20, justificativa: 'Atraso comboio' },
-  ]);
-
-  const [tarefas, setTarefas] = useState<any[]>([
-    { id: '1', titulo: 'Verificar inventário de lâmpadas', concluida: false },
-    { id: '2', titulo: 'Preencher folha de ponto semanal', concluida: true },
-    { id: '3', titulo: 'Realizar manutenção no quadro principal', concluida: false },
-  ]);
+  const [atrasos, setAtrasos] = useState<any[]>([]);
+  const [tarefas, setTarefas] = useState<any[]>([]);
 
   const loadData = async () => {
     setLoading(true);
     try {
       const [resCalendario, resFerias, resAtrasos] = await Promise.all([
-        api.get('/api/colaborador/meu_calendario/').catch(() => null),
-        api.get('/api/colaborador/minhas_ferias/').catch(() => null),
-        api.get('/api/colaborador/meus_atrasos/').catch(() => null)
+        api.get('/api/colaborador/meu_calendario/'),
+        api.get('/api/colaborador/minhas_ferias/'),
+        api.get('/api/colaborador/meus_atrasos/')
       ]);
 
       if (resCalendario && Array.isArray(resCalendario)) setCalendario(resCalendario);
       if (resFerias) setFerias(resFerias);
       if (resAtrasos && Array.isArray(resAtrasos)) setAtrasos(resAtrasos);
-    } catch {
-      console.log('Utilizando dados simulados para o calendário');
+    } catch (e: any) {
+      Alert.alert("Erro", e.message || "Não foi possível carregar as informações do calendário.");
     } finally {
       setLoading(false);
     }
@@ -78,11 +57,9 @@ export default function Calendar() {
     try {
       await api.post('/api/colaborador/marcar_tarefa_concluida/', { id, concluida: !concluidaAtualmente });
       setTarefas(prev => prev.map(t => t.id === id ? { ...t, concluida: !concluidaAtualmente } : t));
-      Alert.alert("Sucesso", "Status da tarefa atualizado!");
-    } catch {
-      // Simulation
-      setTarefas(prev => prev.map(t => t.id === id ? { ...t, concluida: !concluidaAtualmente } : t));
-      Alert.alert("Sucesso (Simulado)", "Status da tarefa atualizado!");
+      Alert.alert("Sucesso", "Status da tarefa atualizado com sucesso!");
+    } catch (e: any) {
+      Alert.alert("Erro", e.message || "Não foi possível atualizar a tarefa.");
     } finally {
       setActionLoading(false);
     }

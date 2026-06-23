@@ -3,9 +3,10 @@ import axios from 'axios';
 // Base URL for API - change this to match your backend host
 export const BASE_URL = "https://eletro-time-production.up.railway.app/api"; // Default address to connect to localhost from Android Emulator
 
+// eslint-disable-next-line import/no-named-as-default-member
 export const apiInstance = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'

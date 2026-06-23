@@ -19,30 +19,22 @@ export default function Documents() {
   const [activeTab, setActiveTab] = useState<'RECIBOS' | 'DECLARACOES'>('RECIBOS');
 
   // States
-  const [recibos, setRecibos] = useState<any[]>([
-    { id: '1', titulo: 'Recibo de Vencimento - Maio 2026', data: '2026-05-31', tamanho: '240 KB' },
-    { id: '2', titulo: 'Recibo de Vencimento - Abril 2026', data: '2026-04-30', tamanho: '240 KB' },
-    { id: '3', titulo: 'Recibo de Vencimento - Março 2026', data: '2026-03-31', tamanho: '238 KB' },
-    { id: '4', titulo: 'Recibo de Vencimento - Fevereiro 2026', data: '2026-02-28', tamanho: '235 KB' },
-  ]);
+  const [recibos, setRecibos] = useState<any[]>([]);
 
-  const [declaracoes, setDeclaracoes] = useState<any[]>([
-    { id: '1', titulo: 'Declaração de Rendimentos IRS 2025', data: '2026-03-15', tamanho: '1.2 MB' },
-    { id: '2', titulo: 'Declaração de Vínculo Contratual', data: '2026-01-10', tamanho: '420 KB' },
-  ]);
+  const [declaracoes, setDeclaracoes] = useState<any[]>([]);
 
   const loadData = async () => {
     setLoading(true);
     try {
       const [resRecibos, resDeclaracoes] = await Promise.all([
-        api.get('/api/colaborador/meus_recibos/').catch(() => null),
-        api.get('/api/colaborador/minhas_declaracoes/').catch(() => null)
+        api.get('/api/colaborador/meus_recibos/'),
+        api.get('/api/colaborador/minhas_declaracoes/')
       ]);
 
       if (resRecibos && Array.isArray(resRecibos)) setRecibos(resRecibos);
       if (resDeclaracoes && Array.isArray(resDeclaracoes)) setDeclaracoes(resDeclaracoes);
-    } catch {
-      console.log('Utilizando dados simulados para documentos');
+    } catch (e: any) {
+      Alert.alert("Erro", e.message || "Não foi possível carregar os documentos.");
     } finally {
       setLoading(false);
     }

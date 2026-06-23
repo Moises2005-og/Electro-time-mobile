@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import * as Location from 'expo-location';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -22,7 +23,7 @@ import { api } from '../../viewmodel/helper/api';
 import { Header } from '../components/Header';
 
 export default function Home() {
-  const [resumo, setResumo] = useState<any>({ hoursWorked: '0h 00m', presenceCount: 0, efficiency: '100%' });
+  const [resumo, setResumo] = useState<any>({ hoursWorked: '0h 00m', presenceCount: 0, efficiency: '0%' });
   const [status, setStatus] = useState<'FORA' | 'TRABALHANDO' | 'ALMOCO'>('FORA');
   const [actionLoading, setActionLoading] = useState(false);
 
@@ -41,16 +42,16 @@ export default function Home() {
   const loadData = async () => {
     try {
       const [resResumo, resAlmoco] = await Promise.all([
-        api.get('/api/colaborador/meu_resumo/').catch(() => null),
-        api.get('/api/colaborador/meu_almoco/').catch(() => null)
+        api.get('/api/colaborador/meu_resumo/'),
+        api.get('/api/colaborador/meu_almoco/')
       ]);
 
       if (resResumo) setResumo(resResumo);
       if (resAlmoco && resAlmoco.inProgress) {
         setStatus('ALMOCO');
       }
-    } catch {
-      console.log('Utilizando dados simulados para a inicialização');
+    } catch (e: any) {
+      Alert.alert("Erro", e.message || "Não foi possível carregar os dados iniciais.");
     }
   };
 
@@ -59,14 +60,50 @@ export default function Home() {
   }, []);
 
   // Actions
+  const getUserLocation = async () => {
+    let { status: permissionStatus } = await Location.requestForegroundPermissionsAsync();
+    if (permissionStatus !== 'granted') {
+      throw new Error('Permissão de localização negada. O aplicativo necessita da sua localização para registrar o ponto.');
+    }
+    
+    try {
+      // Tenta obter a localização atual com timeout manual de 5 segundos
+      const getPos = Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+      });
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Location request timed out')), 5000)
+      );
+      
+      const location = await Promise.race([getPos, timeoutPromise]);
+      return {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+    } catch (err) {
+      console.log('Timeout ao obter localização em tempo real, tentando última localização conhecida...', err);
+      // Fallback para a última localização conhecida
+      let lastLocation = await Location.getLastKnownPositionAsync({});
+      if (lastLocation) {
+        return {
+          latitude: lastLocation.coords.latitude,
+          longitude: lastLocation.coords.longitude,
+        };
+      }
+      // Se nem a última conhecida estiver disponível, lança o erro original
+      throw new Error('Não foi possível obter a sua localização. Verifique se o GPS está ativo.');
+    }
+  };
+
   const handleMarcarPresenca = async (externa: boolean = false) => {
     setActionLoading(true);
     const endpoint = externa ? '/api/colaborador/marcar_presenca_fora/' : '/api/colaborador/marcar_presenca/';
     try {
+      const coords = await getUserLocation();
       await api.post(endpoint, {
-        timestamp: new Date().toISOString(),
-        latitude: -8.8368, // Exemplo de coordenadas de Luanda, Angola
-        longitude: 13.2343
+        tipo: status === 'FORA' ? 'entrada' : 'saida',
+        latitude: coords.latitude,
+        longitude: coords.longitude
       });
       
       const newStatus = status === 'FORA' ? 'TRABALHANDO' : 'FORA';
@@ -76,38 +113,38 @@ export default function Home() {
         `Ponto de ${newStatus === 'TRABALHANDO' ? 'Entrada' : 'Saída'} marcado com sucesso! (${externa ? 'Externo' : 'Interno'})`
       );
       loadData();
-    } catch {
-      // Fallback local caso a API falhe ou não esteja implementada
-      const newStatus = status === 'FORA' ? 'TRABALHANDO' : 'FORA';
-      setStatus(newStatus);
-      Alert.alert(
-        'Ponto Registrado', 
-        `Ponto de ${newStatus === 'TRABALHANDO' ? 'Entrada' : 'Saída'} registrado com sucesso! (Local)`
-      );
+    } catch (e: any) {
+      Alert.alert('Erro ao Registrar Ponto', e.message || 'Não foi possível registrar o ponto. Verifique sua conexão.');
+      console.log(e)
     } finally {
       setActionLoading(false);
     }
   };
 
   const handleAlmoco = async () => {
+    if (status === 'FORA') {
+      Alert.alert(
+        'Ação Não Permitida',
+        'Você precisa registrar a entrada de ponto (iniciar expediente) antes de registrar o almoço.'
+      );
+      return;
+    }
     setActionLoading(true);
     const isStarting = status !== 'ALMOCO';
     const endpoint = isStarting ? '/api/colaborador/iniciar_almoco/' : '/api/colaborador/terminar_almoco/';
     
     try {
+      const coords = await getUserLocation();
       await api.post(endpoint, {
-        timestamp: new Date().toISOString(),
-        latitude: -8.8368,
-        longitude: 13.2343
+        latitude: coords.latitude,
+        longitude: coords.longitude
       });
       
       setStatus(isStarting ? 'ALMOCO' : 'TRABALHANDO');
       Alert.alert('Almoço', isStarting ? 'Horário de almoço iniciado!' : 'Horário de almoço finalizado!');
       loadData();
-    } catch {
-      // Fallback local
-      setStatus(isStarting ? 'ALMOCO' : 'TRABALHANDO');
-      Alert.alert('Almoço', isStarting ? 'Horário de almoço iniciado!' : 'Horário de almoço finalizado!');
+    } catch (e: any) {
+      Alert.alert('Erro ao Alterar Almoço', e.message || 'Não foi possível iniciar/terminar o almoço.');
     } finally {
       setActionLoading(false);
     }
@@ -131,11 +168,8 @@ export default function Home() {
       setGastoModalVisible(false);
       setGastoValor('');
       setGastoDescricao('');
-    } catch {
-      Alert.alert('Sucesso (Simulado)', `Gasto de ${gastoValor} Kz em ${gastoCategoria} registrado!`);
-      setGastoModalVisible(false);
-      setGastoValor('');
-      setGastoDescricao('');
+    } catch (e: any) {
+      Alert.alert('Erro ao Registrar Gasto', e.message || 'Não foi possível registrar o gasto.');
     } finally {
       setActionLoading(false);
     }
@@ -157,10 +191,8 @@ export default function Home() {
       Alert.alert('Sucesso', 'Solicitação de férias enviada com sucesso!');
       setFeriasModalVisible(false);
       setFeriasMotivo('');
-    } catch {
-      Alert.alert('Sucesso (Simulado)', `Férias solicitadas de ${feriasInicio} a ${feriasFim}.`);
-      setFeriasModalVisible(false);
-      setFeriasMotivo('');
+    } catch (e: any) {
+      Alert.alert('Erro ao Solicitar Férias', e.message || 'Não foi possível enviar a solicitação de férias.');
     } finally {
       setActionLoading(false);
     }
@@ -280,9 +312,13 @@ export default function Home() {
         >
           {/* Card 1: Almoço (Pink background) */}
           <TouchableOpacity 
-            style={[styles.categoryCard, { backgroundColor: '#FCECEF' }]}
+            style={[
+              styles.categoryCard, 
+              { backgroundColor: '#FCECEF' },
+              status === 'FORA' && { opacity: 0.6 }
+            ]}
             onPress={handleAlmoco}
-            disabled={actionLoading || status === 'FORA'}
+            disabled={actionLoading}
             activeOpacity={0.8}
           >
             <Text style={styles.categoryTitle}>Almoço</Text>
